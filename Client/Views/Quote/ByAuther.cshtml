@@ -1,0 +1,34 @@
+﻿@model IEnumerable<Client.DTOs.QuotesDTOs.QuoteDTO>
+
+@{
+    ViewData["Title"] = "Quotes";
+}
+  
+
+
+<table id="tableTrigger" class="table">
+    <thead>
+        <tr>
+            <th>
+                Quote
+            </th> 
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td> 
+        </tr>
+}
+    </tbody>
+</table>
+
+ 
+
+<br/>
+<br/>  
+ 
+
+ 

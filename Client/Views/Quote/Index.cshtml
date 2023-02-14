@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Client.DTOs.QuotesDTOs.QuoteDTO>
+
+@{
+    ViewData["Title"] = "Quotes";
+}
+
+<h1>Quotes</h1>
+
+<p>
+    <a asp-action="Create">Create New Quote</a>
+</p>
+
+
+
+<p id="selectTriggerFilter"><label><b>Filter By Auther:</b></label><br></p>
+<table id="tableTrigger" class="table">
+    <thead>
+        <tr>
+            <th>
+                Quote
+            </th>
+            <th>@Html.DisplayNameFor(model => model.Auther)</th> 
+            <th>Operations</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Text)
+            </td>
+            <td>
+                     @Html.DisplayFor(modelItem => item.Auther.Name) 
+            </td>
+            <td>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                    | <a class="btn btn-primary" asp-action="ByAuther" asp-route-id="@item.Auther.Id">Auther's Quotes</a> | 
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+ 
+
+<br/>
+<br/> 
+
+<br/>
+<br/> 
+
+
+
+ 
+
+
+
+
+@section scripts {
+     
+
+    <script>
+
+
+        var table = $('#tableTrigger').DataTable({
+            "lengthMenu": [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ], 
+            "dom": 'rtipS',
+            "deferRender": true,
+            initComplete: function () {
+                var column = this.api().column(1);
+
+                var select = $('<select class="filter"><option value=""></option></select>')
+                    .appendTo('#selectTriggerFilter')
+                    .on('change', function () {
+                        var val = $(this).val();
+                        //column.search(val ? '^' + $(this).val() + '$' : val, true, false).draw();
+                        column.search(val).draw()
+                    });
+
+                var authers = [];
+                column.data().toArray().forEach(function (s) {
+                    s = s.split(',');
+                    s.forEach(function (d) {
+                        if (!~authers.indexOf(d)) {
+                            authers.push(d)
+                            select.append('<option value="' + d + '">' + d + '</option>');
+                        }
+                    })
+                }) 
+            }
+        });
+
+
+
+
+    </script>
+
+}
+
+
